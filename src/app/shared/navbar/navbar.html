@@ -1,0 +1,17 @@
+<header class="navbar">
+  <div>
+    <strong class="brand">TATAME <span>CONNECT</span></strong>
+    <div class="titles">
+      <h1>{{ title() }}</h1>
+      @if (subtitle()) {
+        <p>{{ subtitle() }}</p>
+      }
+    </div>
+  </div>
+  <div class="actions">
+    @if (profileLink()) {
+      <a class="btn btn-outline" [routerLink]="profileLink()">{{ profileLabel() }}</a>
+    }
+    <button class="btn btn-outline" type="button" (click)="logout()">Sair</button>
+  </div>
+</header>

@@ -1,0 +1,66 @@
+<div class="page">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Cadastro da Academia</h1>
+    <p class="subtitle">Encontre os melhores professores para a sua equipe.</p>
+
+    @if (errorMessage()) {
+      <div class="alert">{{ errorMessage() }}</div>
+    }
+
+    <h3>Dados de acesso</h3>
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" formControlName="email" placeholder="contato@academia.com" />
+    </div>
+    <div class="field">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" placeholder="Mínimo 8 caracteres" />
+    </div>
+
+    <h3>Dados da academia</h3>
+    <div class="field">
+      <label for="nomeAcademia">Nome da academia</label>
+      <input id="nomeAcademia" type="text" formControlName="nomeAcademia" />
+    </div>
+    <div class="field">
+      <label for="responsavel">Responsável</label>
+      <input id="responsavel" type="text" formControlName="responsavel" />
+    </div>
+    <div class="field">
+      <label for="telefoneWhatsapp">Telefone / WhatsApp</label>
+      <input id="telefoneWhatsapp" type="text" formControlName="telefoneWhatsapp" placeholder="(11) 99999-9999" />
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" type="text" formControlName="cidade" />
+      </div>
+      <div class="field">
+        <label for="bairro">Bairro</label>
+        <input id="bairro" type="text" formControlName="bairro" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="tipoEspaco">Tipo de espaço</label>
+      <select id="tipoEspaco" formControlName="tipoEspaco">
+        <option value="">Selecione (opcional)</option>
+        @for (item of tiposEspaco; track item[0]) {
+          <option [value]="item[0]">{{ item[1] }}</option>
+        }
+      </select>
+    </div>
+
+    <label class="terms">
+      <input type="checkbox" formControlName="aceiteTermos" />
+      Li e concordo com os Termos de Uso e a Política de Privacidade.
+    </label>
+
+    <button class="btn btn-primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Criando perfil...' : 'Criar perfil da academia' }}
+    </button>
+
+    <p class="footer-link">
+      Já tem conta? <a routerLink="/login">Entrar</a>
+    </p>
+  </form>
+</div>

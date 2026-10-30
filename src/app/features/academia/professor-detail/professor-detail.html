@@ -1,0 +1,83 @@
+<app-navbar title="Perfil do professor" profileLink="/academia/perfil" profileLabel="Meu perfil" />
+
+<div class="content">
+  <a class="back" routerLink="/academia/dashboard">‹ Voltar para a busca</a>
+
+  @if (loading()) {
+    <p class="muted">Carregando perfil...</p>
+  } @else if (errorMessage()) {
+    <div class="alert">{{ errorMessage() }}</div>
+  } @else if (professor(); as professor) {
+    <div class="card profile">
+      <div class="header">
+        <div class="avatar">
+          @if (professor.fotoUrl) {
+            <img [src]="professor.fotoUrl" alt="Foto de {{ professor.nomeCompleto }}" />
+          } @else {
+            <span>{{ professor.nomeCompleto.charAt(0) }}</span>
+          }
+        </div>
+        <div>
+          <h1>{{ professor.nomeCompleto }}</h1>
+          <p class="meta">Faixa {{ professor.faixa | titlecase }} · {{ professor.cidade }} - {{ professor.bairro }}</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <span class="label">Equipe / Linhagem</span>
+          <p>{{ professor.equipeLinhagem || 'Não informado' }}</p>
+        </div>
+        <div>
+          <span class="label">Experiência</span>
+          <p>{{ professor.tempoExperienciaAnos }} anos</p>
+        </div>
+        <div>
+          <span class="label">Valor pretendido</span>
+          <p>R$ {{ professor.valorPretendido }} ({{ tipoCobrancaLabels[professor.tipoCobranca] }})</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="label">Especialidades</span>
+        <div class="chips">
+          @for (item of professor.especialidades; track item) {
+            <span class="chip selected">{{ especialidadeLabels[item] }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="label">Disponibilidade</span>
+        <div class="chips">
+          @for (item of professor.diasDisponiveis; track item) {
+            <span class="chip selected">{{ diaSemanaLabels[item] }}</span>
+          }
+        </div>
+        <div class="chips">
+          @for (item of professor.periodosDisponiveis; track item) {
+            <span class="chip selected">{{ periodoLabels[item] }}</span>
+          }
+        </div>
+      </div>
+
+      @if (professor.bio) {
+        <div class="section">
+          <span class="label">Currículo</span>
+          <p>{{ professor.bio }}</p>
+        </div>
+      }
+
+      @if (professor.certificadoUrl) {
+        <div class="section">
+          <span class="label">Certificado</span>
+          <p><a [href]="professor.certificadoUrl" target="_blank" rel="noopener">Ver certificado enviado ↗</a></p>
+        </div>
+      }
+
+      <a class="btn btn-primary whatsapp" [href]="linkWhatsapp()" target="_blank" rel="noopener">
+        Entrar em contato pelo WhatsApp
+      </a>
+    </div>
+  }
+</div>

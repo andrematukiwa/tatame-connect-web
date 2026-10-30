@@ -1,0 +1,149 @@
+<app-navbar title="Meu perfil" subtitle="Mantenha seus dados atualizados para receber mais contatos." />
+
+<div class="content">
+  @if (loading()) {
+    <p class="muted">Carregando seu perfil...</p>
+  } @else {
+    @if (errorMessage()) {
+      <div class="alert">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="alert success">{{ successMessage() }}</div>
+    }
+
+    <div class="card foto-card">
+      <div class="avatar">
+        @if (fotoUrl()) {
+          <img [src]="fotoUrl()" alt="Sua foto de perfil" />
+        } @else {
+          <span>Sem foto</span>
+        }
+      </div>
+      <label class="btn btn-outline">
+        {{ uploadingFoto() ? 'Enviando...' : 'Alterar foto' }}
+        <input type="file" accept="image/png,image/jpeg" hidden (change)="onFotoSelecionada($event)" />
+      </label>
+    </div>
+
+    <div class="card certificado-card">
+      <div>
+        <h3>Certificado (opcional)</h3>
+        <p class="hint">
+          Envie um certificado (ex: faixa preta, campeonato). Perfis com certificado têm mais chance de serem
+          contatados. Aceita JPG, PNG ou PDF.
+        </p>
+        @if (certificadoUrl()) {
+          <a class="certificado-link" [href]="certificadoUrl()" target="_blank" rel="noopener">Ver certificado enviado</a>
+        }
+      </div>
+      <label class="btn btn-outline">
+        {{ uploadingCertificado() ? 'Enviando...' : certificadoUrl() ? 'Trocar certificado' : 'Enviar certificado' }}
+        <input type="file" accept="image/png,image/jpeg,application/pdf" hidden (change)="onCertificadoSelecionado($event)" />
+      </label>
+    </div>
+
+    <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+      <h3>Dados pessoais</h3>
+      <div class="field">
+        <label for="nomeCompleto">Nome completo</label>
+        <input id="nomeCompleto" type="text" formControlName="nomeCompleto" />
+      </div>
+      <div class="field">
+        <label for="telefoneWhatsapp">Telefone / WhatsApp</label>
+        <input id="telefoneWhatsapp" type="text" formControlName="telefoneWhatsapp" />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="cidade">Cidade</label>
+          <input id="cidade" type="text" formControlName="cidade" />
+        </div>
+        <div class="field">
+          <label for="bairro">Bairro</label>
+          <input id="bairro" type="text" formControlName="bairro" />
+        </div>
+      </div>
+
+      <h3>Dados profissionais</h3>
+      <div class="row">
+        <div class="field">
+          <label for="faixa">Faixa</label>
+          <select id="faixa" formControlName="faixa">
+            @for (item of faixas; track item[0]) {
+              <option [value]="item[0]">{{ item[1] }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="tempoExperienciaAnos">Tempo de experiência (anos)</label>
+          <input id="tempoExperienciaAnos" type="number" min="0" formControlName="tempoExperienciaAnos" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="equipeLinhagem">Equipe / Linhagem</label>
+        <input id="equipeLinhagem" type="text" formControlName="equipeLinhagem" />
+      </div>
+
+      <div class="field">
+        <label>Especialidades</label>
+        <div class="checkbox-group">
+          @for (item of especialidadesDisponiveis; track item[0]) {
+            <span
+              class="chip"
+              [class.selected]="especialidadesSelecionadas().includes(item[0])"
+              (click)="toggleEspecialidade(item[0])"
+            >
+              {{ item[1] }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Dias disponíveis</label>
+        <div class="checkbox-group">
+          @for (item of diasDisponiveisOpcoes; track item[0]) {
+            <span class="chip" [class.selected]="diasSelecionados().includes(item[0])" (click)="toggleDia(item[0])">
+              {{ item[1] }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Período disponível</label>
+        <div class="checkbox-group">
+          @for (item of periodosDisponiveis; track item[0]) {
+            <span class="chip" [class.selected]="periodosSelecionados().includes(item[0])" (click)="togglePeriodo(item[0])">
+              {{ item[1] }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="tipoCobranca">Tipo de cobrança</label>
+          <select id="tipoCobranca" formControlName="tipoCobranca">
+            @for (item of tiposCobranca; track item[0]) {
+              <option [value]="item[0]">{{ item[1] }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="valorPretendido">Valor pretendido (R$)</label>
+          <input id="valorPretendido" type="number" min="0" step="0.01" formControlName="valorPretendido" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="bio">Breve currículo</label>
+        <textarea id="bio" rows="4" maxlength="500" formControlName="bio"></textarea>
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : 'Salvar alterações' }}
+      </button>
+    </form>
+  }
+</div>

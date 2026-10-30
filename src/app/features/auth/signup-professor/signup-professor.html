@@ -1,0 +1,133 @@
+<div class="page">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Cadastro de Professor</h1>
+    <p class="subtitle">Divulgue seu currículo e encontre academias perto de você.</p>
+
+    @if (errorMessage()) {
+      <div class="alert">{{ errorMessage() }}</div>
+    }
+
+    <h3>Dados de acesso</h3>
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" formControlName="email" placeholder="seu@email.com" />
+    </div>
+    <div class="field">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" placeholder="Mínimo 8 caracteres" />
+    </div>
+
+    <h3>Dados pessoais</h3>
+    <div class="field">
+      <label for="nomeCompleto">Nome completo</label>
+      <input id="nomeCompleto" type="text" formControlName="nomeCompleto" />
+    </div>
+    <div class="field">
+      <label for="telefoneWhatsapp">Telefone / WhatsApp</label>
+      <input id="telefoneWhatsapp" type="text" formControlName="telefoneWhatsapp" placeholder="(11) 99999-9999" />
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" type="text" formControlName="cidade" />
+      </div>
+      <div class="field">
+        <label for="bairro">Bairro</label>
+        <input id="bairro" type="text" formControlName="bairro" />
+      </div>
+    </div>
+
+    <h3>Dados profissionais</h3>
+    <div class="row">
+      <div class="field">
+        <label for="faixa">Faixa</label>
+        <select id="faixa" formControlName="faixa">
+          <option value="" disabled>Selecione</option>
+          @for (item of faixas; track item[0]) {
+            <option [value]="item[0]">{{ item[1] }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="tempoExperienciaAnos">Tempo de experiência (anos)</label>
+        <input id="tempoExperienciaAnos" type="number" min="0" formControlName="tempoExperienciaAnos" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="equipeLinhagem">Equipe / Linhagem</label>
+      <input id="equipeLinhagem" type="text" formControlName="equipeLinhagem" />
+    </div>
+
+    <div class="field">
+      <label>Especialidades</label>
+      <div class="checkbox-group">
+        @for (item of especialidadesDisponiveis; track item[0]) {
+          <span
+            class="chip"
+            [class.selected]="especialidadesSelecionadas().includes(item[0])"
+            (click)="toggleEspecialidade(item[0])"
+          >
+            {{ item[1] }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Dias disponíveis</label>
+      <div class="checkbox-group">
+        @for (item of diasDisponiveisOpcoes; track item[0]) {
+          <span class="chip" [class.selected]="diasSelecionados().includes(item[0])" (click)="toggleDia(item[0])">
+            {{ item[1] }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Período disponível</label>
+      <div class="checkbox-group">
+        @for (item of periodosDisponiveis; track item[0]) {
+          <span class="chip" [class.selected]="periodosSelecionados().includes(item[0])" (click)="togglePeriodo(item[0])">
+            {{ item[1] }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="tipoCobranca">Tipo de cobrança</label>
+        <select id="tipoCobranca" formControlName="tipoCobranca">
+          <option value="" disabled>Selecione</option>
+          @for (item of tiposCobranca; track item[0]) {
+            <option [value]="item[0]">{{ item[1] }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="valorPretendido">Valor pretendido (R$)</label>
+        <input id="valorPretendido" type="number" min="0" step="0.01" formControlName="valorPretendido" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="bio">Breve currículo</label>
+      <textarea id="bio" rows="4" maxlength="500" formControlName="bio"></textarea>
+    </div>
+
+    <label class="terms">
+      <input type="checkbox" formControlName="aceiteTermos" />
+      Li e concordo com os Termos de Uso e a Política de Privacidade.
+    </label>
+
+    <button class="btn btn-primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Criando perfil...' : 'Criar perfil de professor' }}
+    </button>
+
+    <p class="footer-link">
+      Já tem conta? <a routerLink="/login">Entrar</a>
+    </p>
+  </form>
+</div>

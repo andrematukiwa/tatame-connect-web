@@ -1,0 +1,55 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.page {
+  width: 100%;
+  max-width: 400px;
+}
+
+.card {
+  width: 100%;
+}
+
+h1 {
+  margin: 0 0 0.3rem;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.alert {
+  background: rgba(225, 29, 46, 0.12);
+  border: 1px solid var(--color-primary);
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+button[type='submit'] {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.footer-link {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+
+  a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+}

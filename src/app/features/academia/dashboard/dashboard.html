@@ -1,0 +1,94 @@
+<app-navbar
+  title="Buscar professores"
+  subtitle="Encontre o professor ideal para a sua equipe."
+  profileLink="/academia/perfil"
+  profileLabel="Meu perfil"
+/>
+
+<div class="content">
+  <form class="card filters" [formGroup]="filterForm" (ngSubmit)="buscar(0)">
+    <div class="field">
+      <label for="cidade">Cidade</label>
+      <input id="cidade" type="text" formControlName="cidade" placeholder="Ex: São Paulo" />
+    </div>
+    <div class="field">
+      <label for="faixa">Faixa</label>
+      <select id="faixa" formControlName="faixa">
+        <option value="">Todas</option>
+        @for (item of faixas; track item[0]) {
+          <option [value]="item[0]">{{ item[1] }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label for="especialidade">Especialidade</label>
+      <select id="especialidade" formControlName="especialidade">
+        <option value="">Todas</option>
+        @for (item of especialidades; track item[0]) {
+          <option [value]="item[0]">{{ item[1] }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label for="valorMin">Valor mín. (R$)</label>
+      <input id="valorMin" type="number" min="0" formControlName="valorMin" />
+    </div>
+    <div class="field">
+      <label for="valorMax">Valor máx. (R$)</label>
+      <input id="valorMax" type="number" min="0" formControlName="valorMax" />
+    </div>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+  </form>
+
+  @if (errorMessage()) {
+    <div class="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Buscando professores...</p>
+  } @else if (resultados().length === 0) {
+    <p class="muted">Nenhum professor encontrado com esses filtros.</p>
+  } @else {
+    <p class="muted">{{ totalElements() }} professor(es) encontrado(s)</p>
+
+    <div class="results">
+      @for (professor of resultados(); track professor.id) {
+        <a class="result-card" [routerLink]="['/academia/professores', professor.id]">
+          <div class="avatar">
+            @if (professor.fotoUrl) {
+              <img [src]="professor.fotoUrl" alt="Foto de {{ professor.nomeCompleto }}" />
+            } @else {
+              <span>{{ professor.nomeCompleto.charAt(0) }}</span>
+            }
+          </div>
+          <div class="info">
+            <h3>
+              {{ professor.nomeCompleto }}
+              @if (professor.certificadoUrl) {
+                <span class="badge" title="Certificado enviado">✓ Certificado</span>
+              }
+            </h3>
+            <p class="meta">Faixa {{ professor.faixa | titlecase }} · {{ professor.cidade }} - {{ professor.bairro }}</p>
+            <p class="meta">{{ professor.tempoExperienciaAnos }} anos de experiência</p>
+          </div>
+          <div class="price">
+            R$ {{ professor.valorPretendido }}
+          </div>
+        </a>
+      }
+    </div>
+
+    <div class="pagination">
+      <button class="btn btn-outline" type="button" (click)="paginaAnterior()" [disabled]="page() === 0">Anterior</button>
+      <span>Página {{ page() + 1 }}</span>
+      <button
+        class="btn btn-outline"
+        type="button"
+        (click)="proximaPagina()"
+        [disabled]="(page() + 1) * 10 >= totalElements()"
+      >
+        Próxima
+      </button>
+    </div>
+  }
+</div>

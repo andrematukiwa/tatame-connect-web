@@ -1,0 +1,34 @@
+<div class="page">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Entrar</h1>
+    <p class="subtitle">Acesse sua conta Tatame Connect.</p>
+
+    @if (errorMessage()) {
+      <div class="alert">{{ errorMessage() }}</div>
+    }
+
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" formControlName="email" placeholder="seu@email.com" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <span class="error">Informe um e-mail válido.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" placeholder="Sua senha" />
+      @if (form.controls.senha.touched && form.controls.senha.invalid) {
+        <span class="error">Informe sua senha.</span>
+      }
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    <p class="footer-link">
+      Ainda não tem conta? <a routerLink="/cadastro">Criar conta</a>
+    </p>
+  </form>
+</div>

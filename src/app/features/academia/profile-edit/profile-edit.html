@@ -1,0 +1,72 @@
+<app-navbar
+  title="Meu perfil"
+  subtitle="Mantenha os dados da academia atualizados."
+  profileLink="/academia/dashboard"
+  profileLabel="Buscar professores"
+/>
+
+<div class="content">
+  @if (loading()) {
+    <p class="muted">Carregando perfil...</p>
+  } @else {
+    @if (errorMessage()) {
+      <div class="alert">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="alert success">{{ successMessage() }}</div>
+    }
+
+    <div class="card foto-card">
+      <div class="avatar">
+        @if (fotoCapaUrl()) {
+          <img [src]="fotoCapaUrl()" alt="Foto de capa da academia" />
+        } @else {
+          <span>Sem foto</span>
+        }
+      </div>
+      <label class="btn btn-outline">
+        {{ uploadingFoto() ? 'Enviando...' : 'Alterar foto de capa' }}
+        <input type="file" accept="image/png,image/jpeg" hidden (change)="onFotoSelecionada($event)" />
+      </label>
+    </div>
+
+    <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+      <h3>Dados da academia</h3>
+      <div class="field">
+        <label for="nomeAcademia">Nome da academia</label>
+        <input id="nomeAcademia" type="text" formControlName="nomeAcademia" />
+      </div>
+      <div class="field">
+        <label for="responsavel">Responsável</label>
+        <input id="responsavel" type="text" formControlName="responsavel" />
+      </div>
+      <div class="field">
+        <label for="telefoneWhatsapp">Telefone / WhatsApp</label>
+        <input id="telefoneWhatsapp" type="text" formControlName="telefoneWhatsapp" />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="cidade">Cidade</label>
+          <input id="cidade" type="text" formControlName="cidade" />
+        </div>
+        <div class="field">
+          <label for="bairro">Bairro</label>
+          <input id="bairro" type="text" formControlName="bairro" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="tipoEspaco">Tipo de espaço</label>
+        <select id="tipoEspaco" formControlName="tipoEspaco">
+          <option value="">Selecione (opcional)</option>
+          @for (item of tiposEspaco; track item[0]) {
+            <option [value]="item[0]">{{ item[1] }}</option>
+          }
+        </select>
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : 'Salvar alterações' }}
+      </button>
+    </form>
+  }
+</div>

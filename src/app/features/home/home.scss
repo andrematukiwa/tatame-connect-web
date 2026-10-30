@@ -1,0 +1,77 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.hero {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.brand {
+  margin-bottom: 1.5rem;
+
+  .brand-mark {
+    display: inline-block;
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin: 0;
+
+    span {
+      display: block;
+      color: var(--color-primary);
+      font-size: 1rem;
+      letter-spacing: 6px;
+    }
+  }
+}
+
+.tagline {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+
+  strong {
+    color: var(--color-text);
+  }
+}
+
+.pillars {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+
+    span {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .btn {
+    width: 100%;
+  }
+}
